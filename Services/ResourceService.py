@@ -7,7 +7,7 @@ from DAOs.RepoDao import same_item_count, add_item
 from datetime import datetime
 from Objects.Image import Image
 from Objects.Video import Video
-from Init import log
+from Config import log
 from SpiderException.SpiderException import SpiderException
 
 

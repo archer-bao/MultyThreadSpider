@@ -1,18 +1,18 @@
-from Init import SPIDER_DATABASE
+from Data.Database import DATABASE
 from datetime import datetime
 
 
-class Image(SPIDER_DATABASE.Model):
+class Image(DATABASE.Model):
     __tablename__ = "image"
-    id = SPIDER_DATABASE.Column(SPIDER_DATABASE.Integer, autoincrement=True, primary_key=True, unique=True)
-    url = SPIDER_DATABASE.Column(SPIDER_DATABASE.String)
-    path = SPIDER_DATABASE.Column(SPIDER_DATABASE.String)
-    blog_id = SPIDER_DATABASE.Column(SPIDER_DATABASE.Integer)
-    add_time = SPIDER_DATABASE.Column(SPIDER_DATABASE.DateTime)
-    release_time = SPIDER_DATABASE.Column(SPIDER_DATABASE.DateTime)
-    load_times = SPIDER_DATABASE.Column(SPIDER_DATABASE.Integer)
-    like_times = SPIDER_DATABASE.Column(SPIDER_DATABASE.Integer)
-    dislike_times = SPIDER_DATABASE.Column(SPIDER_DATABASE.Integer)
+    id = DATABASE.Column(DATABASE.Integer, autoincrement=True, primary_key=True, unique=True)
+    url = DATABASE.Column(DATABASE.String)
+    path = DATABASE.Column(DATABASE.String)
+    blog_id = DATABASE.Column(DATABASE.Integer)
+    add_time = DATABASE.Column(DATABASE.DateTime)
+    release_time = DATABASE.Column(DATABASE.DateTime)
+    load_times = DATABASE.Column(DATABASE.Integer)
+    like_times = DATABASE.Column(DATABASE.Integer)
+    dislike_times = DATABASE.Column(DATABASE.Integer)
 
     def __init__(self, url, blog_id, release_time):
         self.url = url

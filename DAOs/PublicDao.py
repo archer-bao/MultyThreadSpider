@@ -1,5 +1,5 @@
-from Init import SPIDER_DATABASE_SESSION
+from Data.Database import DATABASE_SESSION
 
 
 def commit():
-    SPIDER_DATABASE_SESSION.commit()
+    DATABASE_SESSION.commit()

@@ -1,10 +1,10 @@
-from Init import SPIDER_DATABASE
+from Data.Database import DATABASE
 
 
-class Blog(SPIDER_DATABASE.Model):
+class Blog(DATABASE.Model):
     __tablename__ = "blog"
-    id = SPIDER_DATABASE.Column(SPIDER_DATABASE.Integer, autoincrement=True, primary_key=True, unique=True)
-    url = SPIDER_DATABASE.Column(SPIDER_DATABASE.String)
-    name = SPIDER_DATABASE.Column(SPIDER_DATABASE.String)
-    code = SPIDER_DATABASE.Column(SPIDER_DATABASE.Integer)
-    alive = SPIDER_DATABASE.Column(SPIDER_DATABASE.Integer)
+    id = DATABASE.Column(DATABASE.Integer, autoincrement=True, primary_key=True, unique=True)
+    url = DATABASE.Column(DATABASE.String)
+    name = DATABASE.Column(DATABASE.String)
+    code = DATABASE.Column(DATABASE.Integer)
+    alive = DATABASE.Column(DATABASE.Integer)

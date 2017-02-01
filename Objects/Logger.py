@@ -8,7 +8,7 @@ class Logger:
         self.logger.setLevel(logging.DEBUG)
 
         # 创建一个handler，用于写入日志文件
-        fh = logging.FileHandler(log_file_name)
+        fh = logging.FileHandler(log_file_name, encoding="UTF-8")
         fh.setLevel(logging.DEBUG)
 
         # 再创建一个handler，用于输出到控制台

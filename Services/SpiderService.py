@@ -2,10 +2,9 @@ from Services.ResourceService import video_posts_handler, load_resource, blog_di
     image_posts_handler
 from tumblpy import Tumblpy
 from tumblpy.exceptions import TumblpyError
+from Config import log
 from Services.LogService import use_key
-from Init import log
 from SpiderException.SpiderException import SpiderException
-from Init import PROXIES
 
 
 def init_spider():
@@ -17,9 +16,10 @@ def init_spider():
     return load_resource()
 
 
-@use_key
+# @use_key
 def load_image(**kwargs):
     t = Tumblpy(kwargs.get("apikey").ConsumerKey, kwargs.get("apikey").ConsumerSecret)
+
     log.info("Start load photo posts of {} offset: {}".format(kwargs.get("blog").url, kwargs.get("offset")))
     try:
         resp = t.get('posts/photo', blog_url=kwargs.get("blog").url,
@@ -37,9 +37,13 @@ def load_image(**kwargs):
         return
 
 
-@use_key
+# @use_key
 def load_video(**kwargs):
     t = Tumblpy(kwargs.get("apikey").ConsumerKey, kwargs.get("apikey").ConsumerSecret)
+
+    # t = Tumblpy(kwargs.get("apikey").ConsumerKey, kwargs.get("apikey").ConsumerSecret,
+    #             proxies={'http': "socks5://127.0.0.1:1080", 'https': "socks5://127.0.0.1:1080"}
+    #             )
     log.info("Start load video posts of {} offset: {}".format(kwargs.get("blog").url, kwargs.get("offset")))
     try:
         resp = t.get('posts/video', blog_url=kwargs.get("blog").url,
