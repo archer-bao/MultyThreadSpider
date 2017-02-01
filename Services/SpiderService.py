@@ -16,7 +16,7 @@ def init_spider():
     return load_resource()
 
 
-# @use_key
+@use_key
 def load_image(**kwargs):
     t = Tumblpy(kwargs.get("apikey").ConsumerKey, kwargs.get("apikey").ConsumerSecret)
 
@@ -37,7 +37,7 @@ def load_image(**kwargs):
         return
 
 
-# @use_key
+@use_key
 def load_video(**kwargs):
     t = Tumblpy(kwargs.get("apikey").ConsumerKey, kwargs.get("apikey").ConsumerSecret)
 
