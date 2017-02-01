@@ -1,5 +1,5 @@
 from sqlalchemy.engine import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column
 from sqlalchemy.types import Integer, String, DateTime
@@ -8,7 +8,12 @@ from threading import Thread
 
 # ===========数据库===========
 DATABASE = create_engine(SQLALCHEMY_DATABASE_URI, echo=True)
-DATABASE_SESSION = sessionmaker(bind=DATABASE)()
+DATABASE_SESSION = scoped_session(
+    sessionmaker(
+        autocommit=False,
+        autoflush=False,
+        bind=DATABASE
+    ))
 DATABASE_BASE = declarative_base()
 DATABASE.Model = DATABASE_BASE
 DATABASE.Column = Column
@@ -23,8 +28,13 @@ class Init(Thread):
 
     def run(self):
         global DATABASE, DATABASE_SESSION, DATABASE_BASE
-        DATABASE = create_engine(SQLALCHEMY_DATABASE_URI, echo=False)
-        DATABASE_SESSION = sessionmaker(bind=DATABASE)()
+        DATABASE = create_engine(SQLALCHEMY_DATABASE_URI, echo=True)
+        DATABASE_SESSION = scoped_session(
+            sessionmaker(
+                autocommit=False,
+                autoflush=False,
+                bind=DATABASE
+            ))
         DATABASE_BASE = declarative_base()
         DATABASE.Model = DATABASE_BASE
         DATABASE.Column = Column
