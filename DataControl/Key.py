@@ -2,7 +2,7 @@ from Config import session
 from Obj.Key import Key
 from random import seed, randint
 from time import time
-from sqlalchemy import func
+from sqlalchemy import func, desc
 
 
 def get_key():
@@ -13,8 +13,11 @@ def get_key():
 
 
 def get_all_key():
-    l = session.query(Key).all()
-    return l
+    return session.query(Key).all()
+
+
+def get_newest_key():
+    return session.query(Key).order_by(Key.UpdateTime.desc()).first()
 
 
 def update_key_use(func):

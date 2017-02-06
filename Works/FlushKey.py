@@ -19,6 +19,7 @@ class FlushKey(Thread):
             self.key = key
             self.flush_key()
         spider_log.info("刷新Key全部完成")
+        session.remove()
 
     @update_key_use
     def flush_key(self):
