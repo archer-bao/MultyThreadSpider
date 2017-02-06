@@ -1,4 +1,9 @@
-from Objects.Logger import Logger
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, scoped_session
+from sqlalchemy.ext.declarative import declarative_base
+from Logger import Logger
 
-SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:liqing@localhost:3306/spider"
-log = Logger('SpiderLog.log', 'SpiderLog').get_log()
+DATABASE_URI = "mysql+pymysql://root:liqing@localhost:3306/spider"
+session = scoped_session(sessionmaker(bind=create_engine(DATABASE_URI, echo=True)))
+BaseModel = declarative_base()
+spider_log = Logger('spiderLog.log', 'spiderLog').get_log()

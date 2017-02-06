@@ -1,37 +1,27 @@
-from Config import log
-from Data.Resource import blog_queue, key_queue
-from Services.SpiderService import load_image, load_video
-from threading import Thread
-from time import sleep
-from SpiderException.SpiderException import SpiderException
+from Works.LoadImage import LoadImage
+from Works.FlushKey import FlushKey
+from DataControl.Repo import load_blog_list
 from queue import Queue
+from time import sleep
 
-log.info("爬虫开始运行")
-fail_queue = Queue()
-while True:
-    if not fail_queue.empty():
-        inner_blog_queue = fail_queue
-    else:
-        inner_blog_queue = blog_queue
-        key = key_queue.get()
-    while not inner_blog_queue.empty():
-        blog = inner_blog_queue.get()
-        for outer_offset in range(4):
-            threads = []
-            for inner_offset in range(6):
-                offset = outer_offset * 6 + inner_offset
-                if offset > 20:
-                    break
-                try:
-                    t1 = Thread(target=load_image, kwargs=dict(apikey=key, blog=blog, offset=offset))
-                    t2 = Thread(target=load_video, kwargs=dict(apikey=key, blog=blog, offset=offset))
-                    threads.append(t1)
-                    threads.append(t2)
-                except SpiderException:
-                    key = key_queue.get()
-                    fail_queue.put(blog)
-            for thread in threads:
-                thread.start()
-                thread.join()
-
-    sleep(3600)
+# blog_list = load_blog_list()
+#
+# work_queue = Queue()
+# for blog in blog_list:
+#     for offset in range(21):
+#         load_image = LoadImage(blog.url, offset=offset)
+#         work_queue.put(load_image)
+#
+# while not work_queue.empty():
+#     for i in range(10):
+#         work = work_queue.get()
+#         work.start()
+#     sleep(5)
+#
+# while True:
+#     continue
+f = FlushKey()
+f.start()
+f.join()
+# while True:
+#     continue
