@@ -88,10 +88,17 @@ def run_download():
     spider_log.info("下载结束")
 
 
-if __name__ == '__main__':
+def start():
     while True:
         run_spider()
         run_download()
         reset_blog()
         spider_log.info("下次爬取将在3600s后执行")
         sleep(3600)
+
+
+if __name__ == '__main__':
+    f = FlushKey()
+    f.start()
+    f.join()
+
