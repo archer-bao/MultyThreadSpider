@@ -52,7 +52,6 @@ def update_blog_load(func):
 def reset_blog_loaded():
     all_blog = load_all_blog()
     for blog in all_blog:
-        blog.need_offset = 1
         if blog.alive == 1 and blog.loaded == 1:
             blog.loaded = 0
     session.commit()

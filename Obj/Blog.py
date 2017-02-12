@@ -11,4 +11,3 @@ class Blog(BaseModel):
     code = Column(VARCHAR)
     alive = Column(Integer)
     loaded = Column(Integer)
-    need_offset = Column(Integer)

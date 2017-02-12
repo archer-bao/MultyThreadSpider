@@ -20,7 +20,7 @@ class LoadImage(Thread):
 
     def _load_key(self):
         self.key = get_key()
-        spider_log.info("加载Key完成！KeyId:{}".format(self.key.id))
+        spider_log.debug("加载Key完成！KeyId:{}".format(self.key.id))
 
     def _load_blog(self):
         self.blog = get_blog(self.blog_id)
@@ -29,9 +29,6 @@ class LoadImage(Thread):
     @update_blog_load
     def run(self):
         self._load_blog()
-        if self.blog.need_offset == 0:
-            spider_log.info("此Blog获取图片已完成！线程退出.Blog:{} Offset:{}".format(self.blog.url, self.offset))
-            return
         spider_log.info("开始获取图片！Blog:{} Offset:{}".format(self.blog.url, self.offset))
 
         @update_key_use(self.key)
@@ -43,10 +40,6 @@ class LoadImage(Thread):
                 posts = resp.get('posts')
                 post_handler(posts, self.blog)
                 t.client.close()
-            except SpiderException as e:
-                spider_log.info(e.msg)
-                self.blog.need_offset = 0
-                session.commit()
             except TumblpyRateLimitError:
                 spider_log.info("Key达到上限,本线程退出")
                 return
@@ -70,7 +63,6 @@ def post_handler(posts, blog):
             image = Image(photo_url, blog.id, release_time)
             if same_item_count(Image, image) > 0:
                 spider_log.info("Image:{} already exist.".format(image.url))
-                raise SpiderException(msg="Object already exist")
             else:
                 add_item(image)
                 spider_log.info("Image:{} add to database successful.".format(image.url))
