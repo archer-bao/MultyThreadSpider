@@ -1,6 +1,7 @@
 from Works.LoadImage import LoadImage
 from Works.FlushKey import FlushKey
-from DataControl.Repo import load_blog_list, reset_blog_loaded
+from Works.ResDownloader import ResDownloader
+from DataControl.Repo import load_blog_list, reset_blog_loaded, load_download_item_and_blog_list
 from DataControl.Key import get_newest_key
 from time import sleep
 import requests
@@ -9,6 +10,7 @@ from Config import spider_log
 from threading import Thread
 from queue import Queue
 from datetime import datetime
+from Obj.Image import Image
 
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
@@ -23,7 +25,7 @@ def thread_runner(work_queue, threads=4):
             work.join()
 
 
-def create_work_queue():
+def create_spider_work_queue():
     spider_log.info("开始创建工作队列")
     blog_list = load_blog_list()
     work_queue = Queue()
@@ -49,20 +51,42 @@ def check_key():
 def run_spider():
     spider_log.info("爬虫开始运行")
     check_key()
-    work_queue = create_work_queue()
+    work_queue = create_spider_work_queue()
 
     work_manager = Thread(target=thread_runner, args=(work_queue,))
     work_manager.start()
     work_manager.join()
 
     spider_log.info("本次爬取结束，开始清理工作")
-    spider_log.info("开始重置Blog状态计数器")
+
+    spider_log.info("开始重置Blog状态")
     reset_blog_loaded()
-    spider_log.info("重置Blog状态计数器完成")
+    spider_log.info("重置Blog状态完成")
+
+
+def create_download_work_queue():
+    spider_log.info("开始创建工作队列")
+    item_list = load_download_item_and_blog_list(Image)
+    work_queue = Queue()
+    for item in item_list:
+        d = ResDownloader(item.get("item"), item.get("blog"))
+        work_queue.put(d)
+    spider_log.info("创建工作队列完成")
+    return work_queue
+
+
+def run_download():
+    spider_log.info("下载开始运行")
+    work_queue = create_download_work_queue()
+    work_manager = Thread(target=thread_runner, args=(work_queue,))
+    work_manager.start()
+    work_manager.join()
+    spider_log.info("下载结束")
 
 
 if __name__ == '__main__':
-    while True:
-        run_spider()
-        spider_log.info("下次爬取将在3600s后执行")
-        sleep(3600)
+    # while True:
+    #     run_spider()
+    #     spider_log.info("下次爬取将在3600s后执行")
+    #     sleep(3600)
+    run_download()
