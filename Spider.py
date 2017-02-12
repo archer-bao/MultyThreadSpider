@@ -1,6 +1,7 @@
 from datetime import datetime
 from queue import Queue
 from threading import Thread
+from time import sleep
 
 import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
@@ -28,11 +29,11 @@ def thread_runner(work_queue, threads=4):
 
 def create_spider_work_queue():
     spider_log.info("开始创建工作队列")
-    blog_list = load_blog_list()
+    blog_id_list = load_blog_list()
     work_queue = Queue()
-    for blog in blog_list:
+    for blog_id in blog_id_list:
         for offset in range(21):
-            load_image = LoadImage(blog, offset=offset)
+            load_image = LoadImage(blog_id, offset=offset)
             work_queue.put(load_image)
     spider_log.info("创建工作队列完成")
     return work_queue
@@ -58,6 +59,8 @@ def run_spider():
     work_manager.start()
     work_manager.join()
 
+
+def reset_blog():
     spider_log.info("本次爬取结束，开始清理工作")
 
     spider_log.info("开始重置Blog状态")
@@ -86,13 +89,9 @@ def run_download():
 
 
 if __name__ == '__main__':
-    # while True:
-    #     run_spider()
-    #     run_download()
-    #     spider_log.info("下次爬取将在3600s后执行")
-    #     sleep(3600)
-
-    run_download()
-    # f = FlushKey()
-    # f.start()
-    # f.join()
+    while True:
+        run_spider()
+        run_download()
+        reset_blog()
+        spider_log.info("下次爬取将在3600s后执行")
+        sleep(3600)
