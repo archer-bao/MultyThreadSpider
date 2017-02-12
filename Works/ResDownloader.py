@@ -1,33 +1,36 @@
 import hashlib
-from os import makedirs
 from os.path import join, basename
 from threading import Thread
 
-from DataControl.Repo import get_item, get_item_blog, update_item_path
 from Config import resource_folder, session
+from DataControl.Repo import get_item, get_item_blog
 from Downloader.Downloader import Downloader
 
 
 class ResDownloader(Thread):
     item = None
     blog = None
+    item_id = None
+    item_class = None
 
     def __init__(self, item_id, item_class):
         super(ResDownloader, self).__init__()
-        self.item = get_item(item_class, item_id)
-        self.blog = get_item_blog(self.item)
+        self.item_id = item_id
+        self.item_class = item_class
 
     def run(self):
+        self.item = get_item(self.item_class, self.item_id)
+        self.blog = get_item_blog(self.item)
         folder_path = folder_path_builder(self.blog, "images")
         file_path = file_path_builder(self.item.url, folder_path)
         down = Downloader(self.item.url, file_path)
-        try:
-            down.download()
-        except FileNotFoundError:
-            makedirs(folder_path)
-            down.download()
-        update_item_path(item=self.item, item_class=self.item.__class__, path=file_path)
+        down.download()
+        self.update_item(file_path)
         session.remove()
+
+    def update_item(self, file_path):
+        self.item.path = file_path
+        session.commit()
 
 
 def file_path_builder(url, folder_path):

@@ -93,3 +93,6 @@ if __name__ == '__main__':
     #     sleep(3600)
 
     run_download()
+    # f = FlushKey()
+    # f.start()
+    # f.join()

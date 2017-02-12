@@ -1,6 +1,6 @@
 import http.client
-from os import rename, remove
-from os.path import exists, getsize
+from os import rename, remove, makedirs
+from os.path import exists, getsize, split
 from urllib.parse import urlparse
 from  http.client import RemoteDisconnected
 from time import sleep
@@ -47,7 +47,11 @@ class Downloader(object):
         logging.info("临时文件已改名{}".format(self.file_path))
 
     def save_file(self, response):
-        file = open(self.temp_file_path, 'wb')
+        try:
+            file = open(self.temp_file_path, 'wb')
+        except FileNotFoundError:
+            makedirs(split(self.temp_file_path)[0])
+            file = open(self.temp_file_path, 'wb')
         if file:
             while not response.closed:
                 buffers = response.read(1024)

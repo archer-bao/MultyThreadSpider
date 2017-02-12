@@ -3,12 +3,6 @@ from Obj.Blog import Blog
 from sqlalchemy import func
 
 
-def update_item_path(item, item_class, path):
-    i = session.query(item_class).with_lockmode('update').get(item.id)
-    i.path = path
-    session.commit()
-
-
 def load_download_item_and_blog_list(class_name):
     item_list = session.query(class_name).filter_by(path=None).all()
     return item_list
