@@ -25,7 +25,6 @@ def update_key_use(func):
         k = session.query(Key).with_lockmode('update').get(args[0].key.id)
         k.UseTimes += 1
         session.commit()
-        # session.remove()
         return func(*args, **kwargs)
 
     return wrapper

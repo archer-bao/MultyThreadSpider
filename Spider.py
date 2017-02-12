@@ -1,16 +1,17 @@
-from Works.LoadImage import LoadImage
-from Works.FlushKey import FlushKey
-from Works.ResDownloader import ResDownloader
-from DataControl.Repo import load_blog_list, reset_blog_loaded, load_download_item_and_blog_list
-from DataControl.Key import get_newest_key
-from time import sleep
+from datetime import datetime
+from queue import Queue
+from threading import Thread
+
 import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
+
 from Config import spider_log
-from threading import Thread
-from queue import Queue
-from datetime import datetime
+from DataControl.Key import get_newest_key
+from DataControl.Repo import load_blog_list, reset_blog_loaded, load_download_item_and_blog_list
 from Obj.Image import Image
+from Works.FlushKey import FlushKey
+from Works.LoadImage import LoadImage
+from Works.ResDownloader import ResDownloader
 
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
@@ -69,7 +70,7 @@ def create_download_work_queue():
     item_list = load_download_item_and_blog_list(Image)
     work_queue = Queue()
     for item in item_list:
-        d = ResDownloader(item.get("item"), item.get("blog"))
+        d = ResDownloader(item.id, item.__class__)
         work_queue.put(d)
     spider_log.info("创建工作队列完成")
     return work_queue
@@ -87,6 +88,8 @@ def run_download():
 if __name__ == '__main__':
     # while True:
     #     run_spider()
+    #     run_download()
     #     spider_log.info("下次爬取将在3600s后执行")
     #     sleep(3600)
+
     run_download()

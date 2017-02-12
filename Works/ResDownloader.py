@@ -1,17 +1,21 @@
-from threading import Thread
-from os.path import join, basename
-from os import makedirs
-from Config import resource_folder
 import hashlib
+from os import makedirs
+from os.path import join, basename
+from threading import Thread
+
+from DataControl.Repo import get_item, get_item_blog, update_item_path
+from Config import resource_folder, session
 from Downloader.Downloader import Downloader
-from Config import session
 
 
 class ResDownloader(Thread):
-    def __init__(self, item, blog):
+    item = None
+    blog = None
+
+    def __init__(self, item_id, item_class):
         super(ResDownloader, self).__init__()
-        self.item = item
-        self.blog = blog
+        self.item = get_item(item_class, item_id)
+        self.blog = get_item_blog(self.item)
 
     def run(self):
         folder_path = folder_path_builder(self.blog, "images")
@@ -22,8 +26,7 @@ class ResDownloader(Thread):
         except FileNotFoundError:
             makedirs(folder_path)
             down.download()
-        self.item.path = file_path
-        session.commit()
+        update_item_path(item=self.item, item_class=self.item.__class__, path=file_path)
         session.remove()
 
 
