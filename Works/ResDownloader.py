@@ -24,8 +24,9 @@ class ResDownloader(Thread):
         folder_path = folder_path_builder(self.blog, "images")
         file_path = file_path_builder(self.item.url, folder_path)
         down = Downloader(self.item.url, file_path)
-        down.download()
-        self.update_item(file_path)
+        success = down.download()
+        if success:
+            self.update_item(file_path)
         session.remove()
 
     def update_item(self, file_path):

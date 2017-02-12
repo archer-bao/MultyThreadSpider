@@ -32,6 +32,11 @@ class Downloader(object):
                 remove(self.temp_file_path)
                 logging.info("临时文件不完整,已删除")
 
+    def check_file_path(self):
+        if exists(self.file_path):
+            logging.info("{}下载完成！".format(self.url))
+            return True
+
     def make_request(self):
         if self.url.scheme == 'https':
             self.connection = http.client.HTTPSConnection(self.url.netloc)
@@ -82,7 +87,8 @@ class Downloader(object):
             t_size = response.getheader('Content-Length')
             self.total_size = int(t_size)
             self.check_temp_file()
-            if self.total_size > 0:
+            exist_file = self.check_file_path()
+            if self.total_size > 0 and not exist_file:
                 self.save_file(response)
             else:
                 logging.error('Request file {} size failed'.format(self.file_path))

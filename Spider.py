@@ -82,7 +82,7 @@ def create_download_work_queue():
 def run_download():
     spider_log.info("下载开始运行")
     work_queue = create_download_work_queue()
-    work_manager = Thread(target=thread_runner, args=(work_queue,))
+    work_manager = Thread(target=thread_runner, args=(work_queue,10))
     work_manager.start()
     work_manager.join()
     spider_log.info("下载结束")
@@ -98,7 +98,4 @@ def start():
 
 
 if __name__ == '__main__':
-    f = FlushKey()
-    f.start()
-    f.join()
-
+    start()
