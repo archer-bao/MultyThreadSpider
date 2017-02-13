@@ -32,7 +32,7 @@ def create_spider_work_queue():
     blog_id_list = load_blog_list()
     work_queue = Queue()
     for blog_id in blog_id_list:
-        for offset in range(41, 61):
+        for offset in range(61):
             load_image = LoadImage(blog_id, offset=offset)
             work_queue.put(load_image)
     spider_log.info("创建工作队列完成")
