@@ -8,7 +8,7 @@ from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 from Config import spider_log
 from DataControl.Key import get_newest_key
-from DataControl.Repo import load_blog_list, reset_blog_loaded, load_download_item_and_blog_list
+from DataControl.Repo import load_blog_list, load_download_item_and_blog_list
 from Obj.Image import Image
 from Works.FlushKey import FlushKey
 from Works.LoadImage import LoadImage
@@ -32,7 +32,7 @@ def create_spider_work_queue():
     blog_id_list = load_blog_list()
     work_queue = Queue()
     for blog_id in blog_id_list:
-        for offset in range(41,61):
+        for offset in range(41, 61):
             load_image = LoadImage(blog_id, offset=offset)
             work_queue.put(load_image)
     spider_log.info("创建工作队列完成")
@@ -60,14 +60,6 @@ def run_spider():
     work_manager.join()
 
 
-def reset_blog():
-    spider_log.info("本次爬取结束，开始清理工作")
-
-    spider_log.info("开始重置Blog状态")
-    reset_blog_loaded()
-    spider_log.info("重置Blog状态完成")
-
-
 def create_download_work_queue():
     spider_log.info("开始创建工作队列")
     item_list = load_download_item_and_blog_list(Image)
@@ -92,7 +84,6 @@ def start():
     while True:
         run_spider()
         run_download()
-        reset_blog()
         spider_log.info("下次爬取将在3600s后执行")
         sleep(3600)
 

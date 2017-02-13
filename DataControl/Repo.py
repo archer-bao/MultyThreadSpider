@@ -40,21 +40,13 @@ def mark_dead_blog(blog):
 
 def update_blog_load(func):
     def wrapper(*args, **kwargs):
-        if args[0].offset == 20:
-            b = session.query(Blog).with_lockmode('update').get(args[0].blog_id)
-            b.loaded = 1
-            session.commit()
+        b = session.query(Blog).with_lockmode('update').get(args[0].blog_id)
+        b.loaded += 1
+        session.commit()
+
         return func(*args, **kwargs)
 
     return wrapper
-
-
-def reset_blog_loaded():
-    all_blog = load_all_blog()
-    for blog in all_blog:
-        if blog.alive == 1 and blog.loaded == 1:
-            blog.loaded = 0
-    session.commit()
 
 
 def add_item(item):
