@@ -32,7 +32,7 @@ def create_spider_work_queue():
     blog_id_list = load_blog_list()
     work_queue = Queue()
     for blog_id in blog_id_list:
-        for offset in range(40):
+        for offset in range(41,61):
             load_image = LoadImage(blog_id, offset=offset)
             work_queue.put(load_image)
     spider_log.info("创建工作队列完成")
@@ -82,7 +82,7 @@ def create_download_work_queue():
 def run_download():
     spider_log.info("下载开始运行")
     work_queue = create_download_work_queue()
-    work_manager = Thread(target=thread_runner, args=(work_queue,15))
+    work_manager = Thread(target=thread_runner, args=(work_queue, 15))
     work_manager.start()
     work_manager.join()
     spider_log.info("下载结束")
@@ -99,3 +99,5 @@ def start():
 
 if __name__ == '__main__':
     start()
+    # run_download()
+    # reset_blog()

@@ -6,6 +6,7 @@ from  http.client import RemoteDisconnected
 from time import sleep
 
 from Config import spider_log as logging
+import uuid
 
 
 class Downloader(object):
@@ -74,7 +75,7 @@ class Downloader(object):
         if self.url == '' or self.url == None or self.file_path == '' or self.file_path == None:
             logging.error('Invalid parameter for Downloader')
             return False
-        self.temp_file_path = self.file_path + "_temp"
+        self.temp_file_path = self.file_path + "_temp{}".format(uuid.uuid1())
         logging.info("开始下载:{} 保存路径：{}".format(self.url, self.temp_file_path))
         try:
             response = self.make_request()
@@ -94,6 +95,8 @@ class Downloader(object):
                 logging.error('Request file {} size failed'.format(self.file_path))
         else:
             logging.error('HTTP/HTTPS request failed, status code:{}'.format(response.status))
+            self.connection.close()
+            return False
         self.connection.close()
         logging.info("{} 下载完成！".format(self.url))
         return True

@@ -27,6 +27,9 @@ class ResDownloader(Thread):
         success = down.download()
         if success:
             self.update_item(file_path)
+        else:
+            session.delete(self.item)
+            session.commit()
         session.remove()
 
     def update_item(self, file_path):
