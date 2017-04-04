@@ -1,94 +1,33 @@
-from datetime import datetime
-from queue import Queue
-from threading import Thread
-from time import sleep
-
-import requests
-from requests.packages.urllib3.exceptions import InsecureRequestWarning
-
-from Config import spider_log
-from DataControl.Key import get_newest_key
-from DataControl.Repo import load_blog_list, load_download_item_and_blog_list
-from Obj.Image import Image
-from Works.FlushKey import FlushKey
-from Works.LoadImage import LoadImage
-from Works.ResDownloader import ResDownloader
-
-requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+from Works.KeyManager import check_key
 
 
-def thread_runner(work_queue, threads=4):
-    timer = 0
-    while not work_queue.empty():
-        work = work_queue.get()
-        work.start()
-        timer += 1
-        if timer % threads == 0:
-            work.join()
+# run "pip install -U requests[security]" to fix ssl error
+# 加载key -》 检查key 是否有效-》 使用Key读取博客信息-》读取博客下的多媒体资源
+# 多线程中
+# s.config['keep_alive'] = False 关闭长链接
 
 
-def create_spider_work_queue():
-    spider_log.info("开始创建工作队列")
-    blog_id_list = load_blog_list()
-    work_queue = Queue()
-    for blog_id in blog_id_list:
-        for offset in range(61):
-            load_image = LoadImage(blog_id, offset=offset)
-            work_queue.put(load_image)
-    spider_log.info("创建工作队列完成")
-    return work_queue
+def show_menu():
+    print("欢迎使用大橙喵爬虫,请选择功能")
+    print("1.刷新key")
+    print("2.导入博客列表")
+    print("3.开始运行爬虫")
+    print("4.退出程序")
 
 
-def check_key():
-    spider_log.info("检查API key")
-    key = get_newest_key()
-    if (datetime.now() - key.UpdateTime).days > 7:
-        spider_log.info("API Key已过期，现在开始刷新")
-        f = FlushKey()
-        f.start()
-        f.join()
-    spider_log.info("检查API key 结束")
+def select_item(selection):
+    item = {
+        "1": check_key,
+        "4": exit
+    }
+    item.get(selection, wrong_selection)()
 
 
-def run_spider():
-    spider_log.info("爬虫开始运行")
-    check_key()
-    work_queue = create_spider_work_queue()
-
-    work_manager = Thread(target=thread_runner, args=(work_queue,))
-    work_manager.start()
-    work_manager.join()
-
-
-def create_download_work_queue():
-    spider_log.info("开始创建工作队列")
-    item_list = load_download_item_and_blog_list(Image)
-    work_queue = Queue()
-    for item in item_list:
-        d = ResDownloader(item.id, item.__class__)
-        work_queue.put(d)
-    spider_log.info("创建工作队列完成")
-    return work_queue
-
-
-def run_download():
-    spider_log.info("下载开始运行")
-    work_queue = create_download_work_queue()
-    work_manager = Thread(target=thread_runner, args=(work_queue, 15))
-    work_manager.start()
-    work_manager.join()
-    spider_log.info("下载结束")
-
-
-def start():
-    while True:
-        run_spider()
-        run_download()
-        spider_log.info("下次爬取将在3600s后执行")
-        sleep(3600)
+def wrong_selection():
+    print("输入错误，请重试")
 
 
 if __name__ == '__main__':
-    start()
-    # run_download()
-    # reset_blog()
+    show_menu()
+    selection = input()
+    select_item(selection)

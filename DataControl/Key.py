@@ -1,8 +1,10 @@
-from Config import session
-from Obj.Key import Key
 from random import seed, randint
 from time import time
-from sqlalchemy import func, desc
+
+from sqlalchemy import func
+
+from Config import session
+from Obj.Key import Key
 
 
 def get_key():

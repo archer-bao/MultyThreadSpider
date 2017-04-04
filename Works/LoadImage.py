@@ -1,11 +1,10 @@
 from threading import Thread
 from tumblpy import Tumblpy
+from tumblpy.exceptions import TumblpyRateLimitError, TumblpyError
+from Config import spider_log, session
 from DataControl.Key import get_key, update_key_use
 from DataControl.Repo import same_item_count, add_item, update_blog_load, mark_dead_blog, get_blog
-from Config import spider_log, session
 from Obj.Image import Image
-from Excep import SpiderException
-from tumblpy.exceptions import TumblpyRateLimitError, TumblpyError
 
 
 class LoadImage(Thread):

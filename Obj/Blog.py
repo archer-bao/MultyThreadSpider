@@ -7,7 +7,7 @@ class Blog(BaseModel):
     __tablename__ = "blog"
     id = Column(Integer, primary_key=True, autoincrement=True, unique=True)
     url = Column(VARCHAR)
+    title = Column(VARCHAR)
     name = Column(VARCHAR)
-    code = Column(VARCHAR)
     alive = Column(Integer)
     loaded = Column(Integer)

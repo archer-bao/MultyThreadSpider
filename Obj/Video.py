@@ -5,7 +5,7 @@ from datetime import datetime
 
 
 class Image(BaseModel):
-    __tablename__ = "image"
+    __tablename__ = "video"
     id = Column(Integer, primary_key=True, autoincrement=True, unique=True)
     url = Column(VARCHAR)
     blog_id = Column(Integer)
