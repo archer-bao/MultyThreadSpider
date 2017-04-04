@@ -1,10 +1,10 @@
-import hashlib
 from os.path import join, basename
 from threading import Thread
 
 from Config import resource_folder, session
 from DataControl.Repo import get_item, get_item_blog
 from Downloader.Downloader import Downloader
+from Obj.Image import Image
 
 
 class ResDownloader(Thread):
@@ -21,7 +21,7 @@ class ResDownloader(Thread):
     def run(self):
         self.item = get_item(self.item_class, self.item_id)
         self.blog = get_item_blog(self.item)
-        folder_path = folder_path_builder(self.blog, "images")
+        folder_path = folder_path_builder(self.blog, "images" if self.item_class is Image else "videos")
         file_path = file_path_builder(self.item.url, folder_path)
         down = Downloader(self.item.url, file_path)
         success = down.download()
@@ -33,7 +33,7 @@ class ResDownloader(Thread):
         session.remove()
 
     def update_item(self, file_path):
-        self.item.path = file_path
+        self.item.file_path = file_path
         session.commit()
 
 
@@ -43,17 +43,6 @@ def file_path_builder(url, folder_path):
 
 
 def folder_path_builder(blog, folder):
-    # 基准目录+博客MD5+images
-    # exam:/root/output/ASDHSADHUWNK12334324QWEQW/images
-    encoded_blog_name = encode_blog_name(blog)
-    return join(resource_folder, encoded_blog_name, folder)
-
-
-def encode_blog_name(blog):
-    return encrypt_md5(blog.name)
-
-
-def encrypt_md5(src):
-    m2 = hashlib.md5()
-    m2.update(bytes(src, encoding="utf8"))
-    return m2.hexdigest().upper()
+    # 基准目录+博客name+images
+    # example:/root/output/ASDHSADHUWNK12334324QWEQW/images
+    return join(resource_folder, blog.name, folder)

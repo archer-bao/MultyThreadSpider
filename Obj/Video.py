@@ -4,7 +4,7 @@ from Config import BaseModel
 from datetime import datetime
 
 
-class Image(BaseModel):
+class Video(BaseModel):
     __tablename__ = "video"
     id = Column(Integer, primary_key=True, autoincrement=True, unique=True)
     url = Column(VARCHAR)

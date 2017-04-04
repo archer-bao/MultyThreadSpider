@@ -11,3 +11,12 @@ class Blog(BaseModel):
     name = Column(VARCHAR)
     alive = Column(Integer)
     loaded = Column(Integer)
+
+    def __init__(self, url, title, name, alive, loaded):
+        self.url = url
+        self.title = title
+        self.name = name
+        self.alive = alive
+        self.loaded = loaded
+
+

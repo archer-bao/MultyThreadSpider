@@ -34,13 +34,13 @@ class LoadImage(Thread):
         def do():
             try:
                 t = Tumblpy(self.key.ConsumerKey, self.key.ConsumerSecret)
-                t.client.verify = False
+                # t.client.headers = {'Connection': 'close'}
                 resp = t.get('posts/photo', blog_url=self.blog.url, params={"offset": self.offset})
                 posts = resp.get('posts')
                 post_handler(posts, self.blog)
                 t.client.close()
             except TumblpyRateLimitError:
-                spider_log.info("Key达到上限,本线程退出")
+                spider_log.info("Key调用次数达到上限,本线程退出")
                 return
             except TumblpyError as e:
                 if e.error_code == 404:
