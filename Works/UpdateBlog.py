@@ -31,7 +31,6 @@ class UpdateBlog(Thread):
                     resp = t.get('info', blog_url=urlparse(blog.url).netloc)
                     b = resp.get("blog")
                     t.client.close()
-                    blog.title = b.get("title")
                     blog.name = b.get("name")
                     blog.alive = 1
                     blog.loaded = 0

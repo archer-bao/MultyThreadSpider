@@ -54,7 +54,7 @@ def import_blog():
     with open(r"./blog_data.txt", "r", encoding="utf-8") as f:
         for line in f:
             if len(line) > 1:
-                blog = Blog(url=line.replace("\n", ""), title="", name="", alive=1, loaded=0)
+                blog = Blog(url=line.replace("\n", ""), name="", alive=1, loaded=0)
                 add_item(blog)
 
     new_file_name = "./import_finished{}.txt".format(datetime.now().strftime("%Y%m%d%H%M%S"))
