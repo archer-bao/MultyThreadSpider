@@ -9,4 +9,4 @@ session = scoped_session(
 
 BaseModel = declarative_base()
 spider_log = Logger('spiderLog.log', 'spiderLog').get_log()
-resource_folder = "/root/output/resources/"
+resource_folder = "F:\\output\\"
