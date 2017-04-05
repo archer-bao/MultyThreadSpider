@@ -21,7 +21,7 @@ def get_item_blog(item):
 
 
 def load_blog_list():
-    return session.query(Blog.id).filter(Blog.alive == 1).all()
+    return session.query(Blog.id).filter(Blog.alive == 1, Blog.loaded < 40).all()
 
 
 def load_all_blog():

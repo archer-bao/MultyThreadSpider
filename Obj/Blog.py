@@ -10,11 +10,11 @@ class Blog(BaseModel):
     name = Column(VARCHAR)
     alive = Column(Integer)
     loaded = Column(Integer)
+    posts = Column(Integer)
 
-    def __init__(self, url,  name, alive, loaded):
+    def __init__(self, url):
         self.url = url
-        self.name = name
-        self.alive = alive
-        self.loaded = loaded
-
-
+        self.name = None
+        self.posts = 0
+        self.alive = 1
+        self.loaded = 0

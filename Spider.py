@@ -54,7 +54,7 @@ def import_blog():
     with open(r"./blog_data.txt", "r", encoding="utf-8") as f:
         for line in f:
             if len(line) > 1:
-                blog = Blog(url=line.replace("\n", ""), name="", alive=1, loaded=0)
+                blog = Blog(url=line.replace("\n", ""))
                 add_item(blog)
 
     new_file_name = "./import_finished{}.txt".format(datetime.now().strftime("%Y%m%d%H%M%S"))
@@ -69,8 +69,8 @@ def create_spider_work_queue():
     blog_id_list = load_blog_list()
     work_queue = Queue()
     for blog_id in blog_id_list:
-        for offset in range(40):
-            load_image = LoadImage(blog_id, offset=offset)
+        for offset in range(5):
+            load_image = LoadImage(blog_id, offset=offset * 20)
             work_queue.put(load_image)
     spider_log.info("创建工作队列完成")
     return work_queue

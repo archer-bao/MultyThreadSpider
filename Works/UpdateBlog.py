@@ -35,6 +35,7 @@ class UpdateBlog(Thread):
                     blog.alive = 1
                     blog.loaded = 0
                     blog.url = b.get("url")
+                    blog.posts = b.get("posts")
                     spider_log.info("BlogId:{} 已更新".format(blog.id))
                 except TumblpyRateLimitError:
                     spider_log.info("Key达到上限,本线程退出")
