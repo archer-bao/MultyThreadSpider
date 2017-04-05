@@ -29,7 +29,7 @@ class Spider:
         while len(self.work_queue) > 0:
             for i in range(16):
                 try:
-                    work = works.pop()
+                    work = works.pop(0)
                     work.start()
                 except IndexError:
                     work.join()
