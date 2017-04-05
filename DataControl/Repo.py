@@ -20,7 +20,7 @@ def get_item_blog(item):
     return session.query(Blog).get(item.blog_id)
 
 
-def load_blog_list():
+def load_alive_blog_list():
     return session.query(Blog).filter(Blog.alive == 1).all()
 
 
