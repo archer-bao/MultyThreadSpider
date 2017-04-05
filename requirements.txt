@@ -1,0 +1,4 @@
+PyMySQL==0.7.10
+python-tumblpy==1.1.4
+SQLAlchemy==1.1.8
+requests[security]
