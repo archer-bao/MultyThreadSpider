@@ -4,7 +4,7 @@ from sqlalchemy import func
 
 
 def load_download_item_and_blog_list(class_name):
-    item_list = session.query(class_name).filter_by(path=None).all()
+    item_list = session.query(class_name).filter_by(file_path=None).all()
     return item_list
 
 
