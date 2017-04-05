@@ -4,7 +4,7 @@
 from datetime import datetime
 from  math import ceil
 from os import rename
-from queue import Queue
+from queue import Queue, Empty
 
 from Config import spider_log
 from DataControl.Repo import add_item
@@ -39,8 +39,11 @@ def start_spider():
     work = None
     while not works.empty():
         for i in range(16):
-            work = works.get()
-            work.start()
+            try:
+                work = works.get(block=False)
+                work.start()
+            except Empty:
+                return
         work.join()
 
 
