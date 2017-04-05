@@ -3,7 +3,7 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy.ext.declarative import declarative_base
 from Logger import Logger
 
-DATABASE_URI = "mysql+pymysql://root:liqing@localhost:3306/spider?CharsetEncode=utf8"
+DATABASE_URI = "mysql+pymysql://root:liqing@localhost:3306/spider"
 session = scoped_session(
     sessionmaker(bind=create_engine(DATABASE_URI, echo=False, pool_size=20, max_overflow=0, encoding="utf8")))
 

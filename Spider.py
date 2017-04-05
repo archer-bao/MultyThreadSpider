@@ -2,6 +2,7 @@
 # 多线程中
 # s.config['keep_alive'] = False 关闭长链接
 from datetime import datetime
+from  math import ceil
 from os import rename
 from queue import Queue
 
@@ -68,9 +69,9 @@ def create_spider_work_queue():
     spider_log.info("开始创建工作队列")
     blog_id_list = load_blog_list()
     work_queue = Queue()
-    for blog_id in blog_id_list:
-        for offset in range(5):
-            load_image = LoadImage(blog_id, offset=offset * 20)
+    for blog in blog_id_list:
+        for block in range(int(ceil(blog.posts / 20))):
+            load_image = LoadImage(blog.id, offset=block * 20)
             work_queue.put(load_image)
     spider_log.info("创建工作队列完成")
     return work_queue
