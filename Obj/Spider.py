@@ -26,7 +26,7 @@ class Spider:
         works = self.work_queue
         work = None
         while len(self.work_queue) > 0:
-            for i in range(16):
+            for i in range(8):
                 try:
                     work = works.pop(0)
                     work.start()

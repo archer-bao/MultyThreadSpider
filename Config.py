@@ -5,7 +5,7 @@ from Logger import Logger
 
 DATABASE_URI = "mysql+pymysql://root:liqing@localhost:3306/spider"
 session = scoped_session(
-    sessionmaker(bind=create_engine(DATABASE_URI, echo=False, pool_size=20, max_overflow=0, encoding="utf8")))
+    sessionmaker(bind=create_engine(DATABASE_URI, echo=False, pool_size=8, max_overflow=4, encoding="utf8")))
 
 BaseModel = declarative_base()
 spider_log = Logger('spiderLog.log', 'spiderLog').get_log()
