@@ -49,7 +49,13 @@ def start_download():
     spider_log.info("下载结束")
 
 
-def start_spider():
+def start_load_all_image():
     s = Spider()
-    s.create_spider_work_queue()
-    s.start_spider()
+    s.load_all_image()
+    s.start_()
+
+
+def start_load_new_image():
+    s = Spider()
+    s.load_new_image()
+    s.start_()

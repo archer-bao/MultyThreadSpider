@@ -9,21 +9,20 @@ class Spider:
     def __init__(self):
         self.work_queue = []
 
-    def create_spider_work_queue(self):
-        spider_log.info("开始创建工作队列")
-        blog_id_list = load_alive_blog_list()
-        for blog in blog_id_list:
-            # block = offset * 20
-            start_block = blog.loaded
-            end_block = int(ceil(blog.posts / 20))
-            # print("blogId:{} start:{} end:{}".format(blog.id, start_block, end_block))
+    # def create_spider_work_queue(self):
+    #     spider_log.info("开始创建工作队列")
+    #     blog_id_list = load_alive_blog_list()
+    #     for blog in blog_id_list:
+    #         # block = offset * 20
+    #         start_block = blog.loaded
+    #         end_block = int(ceil(blog.posts / 20))
+    #         # print("blogId:{} start:{} end:{}".format(blog.id, start_block, end_block))
+    #         for block in range(start_block, end_block):
+    #             load_image = LoadImage(blog.id, offset=block * 20)
+    #             self.work_queue.append(load_image)
+    #     spider_log.info("创建工作队列完成")
 
-            for block in range(start_block, end_block):
-                load_image = LoadImage(blog.id, offset=block * 20)
-                self.work_queue.append(load_image)
-        spider_log.info("创建工作队列完成")
-
-    def start_spider(self):
+    def start_(self):
         works = self.work_queue
         work = None
         while len(self.work_queue) > 0:
@@ -35,3 +34,26 @@ class Spider:
                     work.join()
                     return
             work.join()
+
+    def load_all_image(self):
+        spider_log.info("开始执行爬取所有图片")
+        blog_id_list = load_alive_blog_list()
+        for blog in blog_id_list:
+            start_block = blog.loaded
+            end_block = int(ceil(blog.posts / 20))
+            self._load_image(blog, start_block, end_block)
+        spider_log.info("爬取所有图片完成")
+
+    def load_new_image(self):
+        spider_log.info("开始执行爬取新图片")
+        blog_id_list = load_alive_blog_list()
+        for blog in blog_id_list:
+            start_block = 0
+            end_block = int(ceil(blog.posts / 20 - blog.loaded))
+            self._load_image(blog, start_block, end_block)
+        spider_log.info("爬取新图片完成")
+
+    def _load_image(self, blog, start_block, end_block):
+        for block in range(start_block, end_block):
+            load_image = LoadImage(blog.id, offset=block * 20)
+            self.work_queue.append(load_image)

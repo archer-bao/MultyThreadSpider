@@ -33,7 +33,6 @@ class UpdateBlog(Thread):
                     t.client.close()
                     blog.name = b.get("name")
                     blog.alive = 1
-                    blog.loaded = 0
                     blog.url = b.get("url")
                     blog.posts = b.get("posts")
                     spider_log.info("BlogId:{} 已更新".format(blog.id))
