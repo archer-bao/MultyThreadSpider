@@ -1,10 +1,15 @@
 from Config import session
 from Obj.Blog import Blog
-from sqlalchemy import func
+from sqlalchemy import func, not_
 
 
-def load_download_item_and_blog_list(class_name):
+def load_download_item(class_name):
     item_list = session.query(class_name).filter_by(file_path=None).all()
+    return item_list
+
+
+def load_all_downloaded_item(class_name):
+    item_list = session.query(class_name).filter(not_(class_name.file_path is None)).all()
     return item_list
 
 

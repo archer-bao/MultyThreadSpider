@@ -2,7 +2,7 @@
 # 多线程中
 # s.config['keep_alive'] = False 关闭长链接
 
-from MyUtils import import_blog, update_blog, start_download, start_load_all_image, start_load_new_image
+from init import import_blog, update_blog, start_download, start_load_all_image, start_load_new_image
 from Works.KeyManager import check_key
 from Config import spider_log
 
