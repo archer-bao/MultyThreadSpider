@@ -8,17 +8,16 @@ from Config import spider_log
 
 
 def main_menu():
-    while True:
-        print("欢迎使用大橙喵爬虫,请选择功能")
-        print("1.检查key")
-        print("2.导入博客列表")
-        print("3.刷新博客信息")
-        print("4.爬取所有图片")
-        print("5.爬取新发布图片")
-        print("6.开始运行下载功能")
-        print("其他.退出程序")
-        selection = input()
-        select_item(selection)
+    print("欢迎使用大橙喵爬虫,请选择功能")
+    print("1.检查key")
+    print("2.导入博客列表")
+    print("3.刷新博客信息")
+    print("4.爬取所有图片")
+    print("5.爬取新发布图片")
+    print("6.开始运行下载功能")
+    print("其他.退出程序")
+    selection = input()
+    select_item(selection)
 
 
 def select_item(selection):
