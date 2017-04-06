@@ -1,12 +1,13 @@
-from os import system, makedirs
+from os import makedirs
 from os.path import basename, exists
 from os.path import join
+from subprocess import call
 from threading import Thread
 
 from Config import resource_folder, session
+from Config import spider_log
 from DataControl.Repo import get_item, get_item_blog
 from Obj.Image import Image
-from Config import spider_log
 
 
 class ResDownloader(Thread):
@@ -27,7 +28,7 @@ class ResDownloader(Thread):
         file_path = get_file_path(self.item.url, folder_path)
         cmd = "you-get -o {} {}".format(folder_path, self.item.url)
         spider_log.info("下载 Id:{} 命令:{}".format(self.item.id, cmd))
-        p = system(cmd)
+        p = call(cmd)
         success = p is 0
         spider_log.info("Id:{} 结果为 {}".format(self.item.id,str(success)))
         # down = Downloader(self.item.url, file_path)
