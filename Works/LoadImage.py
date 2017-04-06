@@ -28,7 +28,7 @@ class LoadImage(Thread):
     @update_blog_load
     def run(self):
         self._load_blog()
-        spider_log.info("开始获取图片！Blog:{} Offset:{}".format(self.blog.url, self.offset))
+        spider_log.info("Thread:{} 开始获取图片！Blog:{} Offset:{}".format(self.getName(),self.blog.url, self.offset))
 
         @update_key_use(self.key)
         def do():
