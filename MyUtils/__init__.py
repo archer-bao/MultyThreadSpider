@@ -37,7 +37,7 @@ def start_download():
     item_list = load_download_item_and_blog_list(Image)
     while len(item_list) > 0:
         d = None
-        for i in range(16):
+        for i in range(8):
             try:
                 item = item_list.pop(0)
                 d = ResDownloader(item.id, item.__class__)
