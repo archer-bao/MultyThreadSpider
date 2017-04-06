@@ -1,10 +1,12 @@
-from os.path import join, basename
+from os import system, makedirs
+from os.path import basename, exists
+from os.path import join
 from threading import Thread
 
 from Config import resource_folder, session
 from DataControl.Repo import get_item, get_item_blog
-from Downloader.Downloader import Downloader
 from Obj.Image import Image
+from Config import spider_log
 
 
 class ResDownloader(Thread):
@@ -21,12 +23,18 @@ class ResDownloader(Thread):
     def run(self):
         self.item = get_item(self.item_class, self.item_id)
         self.blog = get_item_blog(self.item)
-        folder_path = folder_path_builder(self.blog, "images" if self.item_class is Image else "videos")
-        file_path = file_path_builder(self.item.url, folder_path)
-        down = Downloader(self.item.url, file_path)
-        success = down.download()
+        folder_path = get_file_folder_path(self.blog, "images" if self.item_class is Image else "videos")
+        file_path = get_file_path(self.item.url, folder_path)
+        cmd = "you-get -o {} {}".format(folder_path, self.item.url)
+        spider_log.info("下载 Id:{} 命令:{}".format(self.item.id, cmd))
+        p = system(cmd)
+        success = p is 0
+        spider_log.info("Id:{} 结果为 {}".format(self.item.id,str(success)))
+        # down = Downloader(self.item.url, file_path)
+        # success = down.download()
         if success:
             self.update_item(file_path)
+            # pass
         else:
             session.delete(self.item)
             session.commit()
@@ -37,12 +45,15 @@ class ResDownloader(Thread):
         session.commit()
 
 
-def file_path_builder(url, folder_path):
+def get_file_path(url, folder_path):
     output_file_path = join(folder_path, basename(url))
     return output_file_path
 
 
-def folder_path_builder(blog, folder):
+def get_file_folder_path(blog, folder):
     # 基准目录+博客name+images
     # example:/root/output/ASDHSADHUWNK12334324QWEQW/images
-    return join(resource_folder, blog.name, folder)
+    path = join(resource_folder, blog.name, folder)
+    if not exists(path):
+        makedirs(path)
+    return path
