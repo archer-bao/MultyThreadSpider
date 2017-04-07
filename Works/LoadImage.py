@@ -3,7 +3,7 @@ from tumblpy import Tumblpy
 from tumblpy.exceptions import TumblpyRateLimitError, TumblpyError
 from Config import spider_log, session
 from DataControl.Key import get_key, update_key_use
-from DataControl.Repo import same_item_count, add_item, update_blog_load, mark_dead_blog, get_blog
+from DataControl.Repo import same_item_count, add_item, update_blog_load_image, mark_dead_blog, get_blog
 from Obj.Image import Image
 
 
@@ -25,7 +25,7 @@ class LoadImage(Thread):
         self.blog = get_blog(self.blog_id)
         spider_log.info("加载Blog完成！BlogId:{}".format(self.blog.id))
 
-    @update_blog_load
+    @update_blog_load_image
     def run(self):
         self._load_blog()
         spider_log.info("Thread:{} 开始获取图片！Blog:{} Offset:{}".format(self.getName(),self.blog.url, self.offset))

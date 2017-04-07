@@ -43,10 +43,21 @@ def mark_dead_blog(blog):
     session.commit()
 
 
-def update_blog_load(func):
+def update_blog_load_image(func):
     def wrapper(*args, **kwargs):
         b = session.query(Blog).with_lockmode('update').get(args[0].blog_id)
-        b.loaded += 1
+        b.loaded_image += 1
+        session.commit()
+
+        return func(*args, **kwargs)
+
+    return wrapper
+
+
+def update_blog_load_video(func):
+    def wrapper(*args, **kwargs):
+        b = session.query(Blog).with_lockmode('update').get(args[0].blog_id)
+        b.loaded_video += 1
         session.commit()
 
         return func(*args, **kwargs)

@@ -9,7 +9,8 @@ class Blog(BaseModel):
     url = Column(VARCHAR)
     name = Column(VARCHAR)
     alive = Column(Integer)
-    loaded = Column(Integer)
+    loaded_image = Column(Integer)
+    loaded_video = Column(Integer)
     posts = Column(Integer)
 
     def __init__(self, url):
@@ -17,4 +18,5 @@ class Blog(BaseModel):
         self.name = None
         self.posts = 0
         self.alive = 1
-        self.loaded = 0
+        self.loaded_image = 0
+        self.loaded_video = 0

@@ -59,3 +59,15 @@ def start_load_new_image():
     s = Spider()
     s.load_new_image()
     s.start_()
+
+
+def start_load_all_video():
+    s = Spider()
+    s.load_all_video()
+    s.start_()
+
+
+def start_load_new_video():
+    s = Spider()
+    s.load_new_video()
+    s.start_()
