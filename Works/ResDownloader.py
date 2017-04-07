@@ -31,15 +31,10 @@ class ResDownloader(Thread):
         p = call(cmd)
         success = p is 0
         spider_log.info("Id:{} 结果为 {}".format(self.item.id, str(success)))
-        # down = Downloader(self.item.url, file_path)
-        # success = down.download()
         if success:
             self.success_callback(file_path)
-            # pass
         else:
             self.fail_callback()
-            # session.delete(self.item)
-            # session.commit()
         session.remove()
 
     def success_callback(self, file_path):
