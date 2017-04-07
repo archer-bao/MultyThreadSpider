@@ -30,19 +30,24 @@ class ResDownloader(Thread):
         spider_log.info("下载 Id:{} 命令:{}".format(self.item.id, cmd))
         p = call(cmd)
         success = p is 0
-        spider_log.info("Id:{} 结果为 {}".format(self.item.id,str(success)))
+        spider_log.info("Id:{} 结果为 {}".format(self.item.id, str(success)))
         # down = Downloader(self.item.url, file_path)
         # success = down.download()
         if success:
-            self.update_item(file_path)
+            self.success_callback(file_path)
             # pass
         else:
-            session.delete(self.item)
-            session.commit()
+            self.fail_callback()
+            # session.delete(self.item)
+            # session.commit()
         session.remove()
 
-    def update_item(self, file_path):
+    def success_callback(self, file_path):
         self.item.file_path = file_path
+        session.commit()
+
+    def fail_callback(self):
+        self.item.file_path = "404"
         session.commit()
 
 
