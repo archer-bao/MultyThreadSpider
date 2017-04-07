@@ -7,6 +7,7 @@ from DataControl.Repo import load_download_item
 from Obj.Blog import Blog
 from Obj.Image import Image
 from Obj.Spider import Spider
+from Obj.Video import Video
 from Works.ResDownloader import ResDownloader
 from Works.UpdateBlog import UpdateBlog
 
@@ -32,9 +33,7 @@ def update_blog():
     up.join()
 
 
-def start_download():
-    spider_log.info("下载开始运行")
-    item_list = load_download_item(Image)
+def download_item(item_list):
     while len(item_list) > 0:
         d = None
         for i in range(8):
@@ -46,28 +45,40 @@ def start_download():
                 d.join()
         d.join()
 
-    spider_log.info("下载结束")
+
+def download_image():
+    spider_log.info("下载图片开始运行")
+    item_list = load_download_item(Image)
+    download_item(item_list)
+    spider_log.info("下载图片结束")
 
 
-def start_load_all_image():
+def download_video():
+    spider_log.info("下载视频开始运行")
+    item_list = load_download_item(Video)
+    download_item(item_list)
+    spider_log.info("下载视频结束")
+
+
+def load_all_image():
     s = Spider()
     s.load_all_image()
     s.start_()
 
 
-def start_load_new_image():
+def load_new_image():
     s = Spider()
     s.load_new_image()
     s.start_()
 
 
-def start_load_all_video():
+def load_all_video():
     s = Spider()
     s.load_all_video()
     s.start_()
 
 
-def start_load_new_video():
+def load_new_video():
     s = Spider()
     s.load_new_video()
     s.start_()
