@@ -8,4 +8,4 @@ for item in items:
     if item.file_path and not exists(item.file_path):
         print("ooh!!! " + item.file_path)
         item.file_path = None
-        session.commit()
+session.commit()
