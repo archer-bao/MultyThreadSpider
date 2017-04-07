@@ -27,7 +27,8 @@ class ResDownloader(Thread):
         folder_path = get_file_folder_path(self.blog, "images" if self.item_class is Image else "videos")
         file_path = get_file_path(self.item.url, folder_path)
         # eg.  wget https://vtt.tumblr.com/tumblr_o6cjopNCcN1vt349a.mp4 -O /mnt/storage/tumblr_o6cjopNCcN1vt349a.mp4
-        cmd = "wget {} -O {}".format(self.item.url, file_path)
+        # cmd = "wget -c {} -O {}".format(self.item.url, file_path)
+        cmd = ["wget", "-c", self.item.url, "-O", file_path]
         spider_log.info("下载 Id:{} 命令:{}".format(self.item.id, cmd))
         p = call(cmd)
         success = p is 0
@@ -43,7 +44,7 @@ class ResDownloader(Thread):
         session.commit()
 
     def fail_callback(self):
-        self.item.file_path = "404"
+        self.item.file_path = "#error"
         session.commit()
 
 
