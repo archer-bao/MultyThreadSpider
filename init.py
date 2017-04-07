@@ -10,6 +10,7 @@ from Obj.Spider import Spider
 from Obj.Video import Video
 from Works.ResDownloader import ResDownloader
 from Works.UpdateBlog import UpdateBlog
+from time import sleep
 
 
 def import_blog():
@@ -44,6 +45,7 @@ def download_item(item_list):
             except IndexError:
                 d.join()
         d.join()
+        sleep(5)
 
 
 def download_image():
