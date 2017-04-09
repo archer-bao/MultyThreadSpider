@@ -27,7 +27,7 @@ class Spider:
         spider_log.info("开始执行爬取所有图片")
         blog_id_list = load_alive_blog_list()
         for blog in blog_id_list:
-            start_block = blog.loaded
+            start_block = blog.loaded_image
             end_block = int(ceil(blog.posts / 20))
             self._load_image(blog, start_block, end_block)
         spider_log.info("爬取所有图片完成")
@@ -37,7 +37,7 @@ class Spider:
         blog_id_list = load_alive_blog_list()
         for blog in blog_id_list:
             start_block = 0
-            end_block = int(ceil(blog.posts / 20 - blog.loaded))
+            end_block = int(ceil(blog.posts / 20 - blog.loaded_image))
             self._load_image(blog, start_block, end_block)
         spider_log.info("爬取新图片完成")
 

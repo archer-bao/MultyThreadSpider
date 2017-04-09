@@ -28,7 +28,7 @@ class ResDownloader(Thread):
         file_path = get_file_path(self.item.url, folder_path)
         # eg.  wget https://vtt.tumblr.com/tumblr_o6cjopNCcN1vt349a.mp4 -O /mnt/storage/tumblr_o6cjopNCcN1vt349a.mp4
         # cmd = "wget -c {} -O {}".format(self.item.url, file_path)
-        cmd = ["wget", "-cq", self.item.url, "-O", file_path]
+        cmd = ["wget", "-cq", self.item.url.replace("https", "http"), "-O", file_path]
         spider_log.info("下载 Id:{} 命令:{}".format(self.item.id, cmd))
         p = call(cmd)
         success = p is 0
